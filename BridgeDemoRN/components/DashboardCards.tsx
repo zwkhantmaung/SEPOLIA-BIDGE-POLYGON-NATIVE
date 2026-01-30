@@ -7,15 +7,10 @@ function formatNumber(n: number): string {
 
 interface DashboardCardsProps {
   availableZeth: number;
-  lockedZeth: number;
   availableWzeth: number;
 }
 
-export function DashboardCards({
-  availableZeth,
-  lockedZeth,
-  availableWzeth,
-}: DashboardCardsProps) {
+export function DashboardCards({ availableZeth, availableWzeth }: DashboardCardsProps) {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -23,11 +18,9 @@ export function DashboardCards({
         <Text style={styles.value}>{formatNumber(availableZeth)}</Text>
       </View>
       <View style={styles.card}>
-        <Text style={styles.label}>Locked ZETH</Text>
-        <Text style={styles.value}>{formatNumber(lockedZeth)}</Text>
-      </View>
-      <View style={styles.card}>
-        <Text style={styles.label}>Available wZETH</Text>
+        <Text style={styles.label}>
+          Available <Text style={styles.labelNoUppercase}>wZETH</Text>
+        </Text>
         <Text style={styles.value}>{formatNumber(availableWzeth)}</Text>
       </View>
     </View>
@@ -56,6 +49,9 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
+  },
+  labelNoUppercase: {
+    textTransform: 'none',
   },
   value: {
     fontSize: 22,

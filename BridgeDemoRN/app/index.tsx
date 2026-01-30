@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Platform,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -41,7 +42,7 @@ export default function BridgeDashboardScreen() {
     setTimeout(() => {
       setAvailableZeth((prev) => prev + MINT_AMOUNT);
       setLoadingAction(null);
-      setSuccess('Mint ZETH success!');
+      setSuccess(`${MINT_AMOUNT.toLocaleString()} ZETH minted.`);
     }, 1500);
   };
 
@@ -57,8 +58,8 @@ export default function BridgeDashboardScreen() {
       setLockedZeth((prev) => prev + LOCK_AMOUNT);
       setAvailableWzeth((prev) => prev + LOCK_AMOUNT);
       setLoadingAction(null);
-      setSuccess('Lock ZETH & Mint wZETH success!');
-    }, 1500);
+      setSuccess(`${LOCK_AMOUNT.toLocaleString()} ZETH was locked. ${LOCK_AMOUNT.toLocaleString()} wZETH was minted.`);
+    }, 1000);
   };
 
   const handleBurnWzeth = () => {
@@ -73,7 +74,7 @@ export default function BridgeDashboardScreen() {
       setLockedZeth((prev) => prev - BURN_AMOUNT);
       setAvailableZeth((prev) => prev + BURN_AMOUNT);
       setLoadingAction(null);
-      setSuccess(`Burn success! Unlocked ${BURN_AMOUNT.toLocaleString()} ZETH.`);
+      setSuccess(`Burned ${BURN_AMOUNT.toLocaleString()} wZETH. Unlocked ${BURN_AMOUNT.toLocaleString()} ZETH.`);
     }, 1500);
   };
 
@@ -85,11 +86,17 @@ export default function BridgeDashboardScreen() {
       setLockedZeth(0);
       setAvailableWzeth(0);
       setLoadingAction(null);
-      setSuccess('Contract reset complete.');
+      setSuccess('Bridge contract was reset.');
     }, 1500);
   };
 
-  const statusColor = statusType === 'success' ? '#22c55e' : statusType === 'error' ? '#ef4444' : '#64748b';
+  const dismissModal = () => {
+    setStatusMessage('');
+    setStatusType('idle');
+  };
+
+  const isSuccess = statusType === 'success';
+  const showModal = statusMessage.length > 0;
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
@@ -100,11 +107,7 @@ export default function BridgeDashboardScreen() {
       >
         <View style={styles.content}>
           <Text style={styles.title}>Bridge Dashboard</Text>
-          <DashboardCards
-            availableZeth={availableZeth}
-            lockedZeth={lockedZeth}
-            availableWzeth={availableWzeth}
-          />
+          <DashboardCards availableZeth={availableZeth} availableWzeth={availableWzeth} />
 
           <View style={styles.section}>
             <Pressable
@@ -182,11 +185,33 @@ export default function BridgeDashboardScreen() {
             </Pressable>
           </View>
 
-          {statusMessage ? (
-            <Text style={[styles.statusText, { color: statusColor }]}>{statusMessage}</Text>
-          ) : null}
         </View>
       </ScrollView>
+
+      <Modal
+        visible={showModal}
+        transparent
+        animationType="fade"
+        onRequestClose={dismissModal}
+      >
+        <Pressable style={styles.modalOverlay} onPress={dismissModal}>
+          <Pressable style={styles.modalContent} onPress={(e) => e.stopPropagation()}>
+            <View style={styles.modalHeader}>
+              <Text
+                style={[
+                  styles.modalTitle
+                ]}
+              >
+                {isSuccess ? 'Success' : 'Error'}
+              </Text>
+            </View>
+            <Text style={styles.modalMessage}>{statusMessage}</Text>
+            <Pressable style={styles.modalButton} onPress={dismissModal}>
+              <Text style={styles.modalButtonText}>OK</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -246,9 +271,53 @@ const styles = StyleSheet.create({
   buttonDisabled: {
     opacity: 0.7,
   },
-  statusText: {
-    fontSize: 14,
-    marginTop: 8,
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    width: '100%',
+    maxWidth: 320,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  modalHeader: {
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
     textAlign: 'center',
+  },
+  modalMessage: {
+    fontSize: 16,
+    color: '#1e293b',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 24,
+    textAlign: 'center',
+  },
+  modalButton: {
+    backgroundColor: '#475569',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
