@@ -12,10 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { DashboardCards } from '@/components/DashboardCards';
-
-const MINT_AMOUNT = 1_000_000;
-const LOCK_AMOUNT = 10_000;
-const BURN_AMOUNT = 10_000;
+import { mintAmount, lockAmount, burnAmount } from '@/constants/env';
 
 export default function BridgeDashboardScreen() {
   const [availableZeth, setAvailableZeth] = useState(0);
@@ -40,41 +37,41 @@ export default function BridgeDashboardScreen() {
     setLoadingAction('mint');
     setStatusMessage('');
     setTimeout(() => {
-      setAvailableZeth((prev) => prev + MINT_AMOUNT);
+      setAvailableZeth((prev) => prev + mintAmount);
       setLoadingAction(null);
-      setSuccess(`${MINT_AMOUNT.toLocaleString()} ZETH minted.`);
+      setSuccess(`${mintAmount.toLocaleString()} ZETH minted.`);
     }, 1500);
   };
 
   const handleLockAndMintWzeth = () => {
-    if (availableZeth < LOCK_AMOUNT) {
-      setError(`Need at least ${LOCK_AMOUNT.toLocaleString()} ZETH to lock.`);
+    if (availableZeth < lockAmount) {
+      setError(`Need at least ${lockAmount.toLocaleString()} ZETH to lock.`);
       return;
     }
     setLoadingAction('lock');
     setStatusMessage('');
     setTimeout(() => {
-      setAvailableZeth((prev) => prev - LOCK_AMOUNT);
-      setLockedZeth((prev) => prev + LOCK_AMOUNT);
-      setAvailableWzeth((prev) => prev + LOCK_AMOUNT);
+      setAvailableZeth((prev) => prev - lockAmount);
+      setLockedZeth((prev) => prev + lockAmount);
+      setAvailableWzeth((prev) => prev + lockAmount);
       setLoadingAction(null);
-      setSuccess(`${LOCK_AMOUNT.toLocaleString()} ZETH was locked. ${LOCK_AMOUNT.toLocaleString()} wZETH was minted.`);
+      setSuccess(`${lockAmount.toLocaleString()} ZETH was locked. ${lockAmount.toLocaleString()} wZETH was minted.`);
     }, 1000);
   };
 
   const handleBurnWzeth = () => {
-    if (availableWzeth < BURN_AMOUNT) {
-      setError(`Need at least ${BURN_AMOUNT.toLocaleString()} wZETH to burn.`);
+    if (availableWzeth < burnAmount) {
+      setError(`Need at least ${burnAmount.toLocaleString()} wZETH to burn.`);
       return;
     }
     setLoadingAction('burn');
     setStatusMessage('');
     setTimeout(() => {
-      setAvailableWzeth((prev) => prev - BURN_AMOUNT);
-      setLockedZeth((prev) => prev - BURN_AMOUNT);
-      setAvailableZeth((prev) => prev + BURN_AMOUNT);
+      setAvailableWzeth((prev) => prev - burnAmount);
+      setLockedZeth((prev) => prev - burnAmount);
+      setAvailableZeth((prev) => prev + burnAmount);
       setLoadingAction(null);
-      setSuccess(`Burned ${BURN_AMOUNT.toLocaleString()} wZETH. Unlocked ${BURN_AMOUNT.toLocaleString()} ZETH.`);
+      setSuccess(`Burned ${burnAmount.toLocaleString()} wZETH. Unlocked ${burnAmount.toLocaleString()} ZETH.`);
     }, 1500);
   };
 
