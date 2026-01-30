@@ -1,6 +1,6 @@
 # BridgeDemoRN
 
-Burn wZETH and Reset Bridge UI (Expo + React Native).
+Bridge dashboard (Expo + React Native): live ZETH / wZETH values and simulated Mint, Lock & Mint wZETH, Burn wZETH, and Reset actions. No real blockchain calls — pure `useState` simulation.
 
 ## Run as standalone app (no Expo Go)
 
