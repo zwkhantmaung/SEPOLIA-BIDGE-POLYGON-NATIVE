@@ -34,6 +34,16 @@ The app runs as its own native binary on simulator/device, not inside Expo Go.
 
 You need **Xcode** (iOS) and/or **Android Studio** (Android) installed. The first build can take several minutes.
 
+**iPhone 15 (simulator or device):** Use `npm run run:ios` so the app builds and runs with Metro. On a physical iPhone 15, ensure the device and Mac are on the same Wi‑Fi so the app can load the bundle. If the app crashes on launch, run `npx expo prebuild --clean` then `npm run run:ios` again.
+
+**“No script URL provided” when you stop Metro:** The default iOS run is a *development* build: it loads the JavaScript from Metro. When you stop Metro (e.g. stop the terminal), the app has no bundle and shows “No script URL provided”. That’s expected. To run the app **without** Metro (e.g. after closing the terminal), use a Release build with the bundle embedded:
+
+```bash
+npm run run:ios:release
+```
+
+Keep Metro running only when you use `npm run run:ios` (development).
+
 ## Development with Expo Go (optional)
 
 To use the dev server and Expo Go instead:
