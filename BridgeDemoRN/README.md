@@ -1,29 +1,48 @@
-# Welcome to your Expo app 👋
+# BridgeDemoRN
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Burn wZETH and Reset Bridge UI (Expo + React Native).
 
-## Get started
+## Run as standalone app (no Expo Go)
 
-1. Install dependencies
+The app runs as its own native binary on simulator/device, not inside Expo Go.
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. **Generate native projects** (first time only; creates `ios/` and `android/`)
 
    ```bash
-   npx expo start
+   npx expo prebuild
    ```
 
-In the output, you'll find options to open the app in a
+3. **Run on iOS** (builds and launches the standalone app in the iOS Simulator)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run run:ios
+   ```
+   Or: `npx expo run:ios`
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+4. **Run on Android** (builds and launches on emulator or connected device)
+
+   ```bash
+   npm run run:android
+   ```
+   Or: `npx expo run:android`
+
+You need **Xcode** (iOS) and/or **Android Studio** (Android) installed. The first build can take several minutes.
+
+## Development with Expo Go (optional)
+
+To use the dev server and Expo Go instead:
+
+```bash
+npm start
+```
+
+Then scan the QR code with Expo Go, or press `i` / `a` for iOS/Android simulator (with Expo Go installed in the simulator).
 
 ## Get a fresh project
 
@@ -37,14 +56,5 @@ This command will move the starter code to the **app-example** directory and cre
 
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Expo documentation](https://expo.dev/docs)
+- [Expo Router](https://expo.dev/router/introduction)
