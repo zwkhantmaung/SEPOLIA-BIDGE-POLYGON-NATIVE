@@ -1,0 +1,5 @@
+*.jfr
+ETH_Network/networkFiles/
+ETH_Network/Node-*/
+POL_Network/networkFiles/
+POL_Network/Node-*/
